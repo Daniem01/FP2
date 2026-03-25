@@ -18,9 +18,9 @@ Tablero(int dimension);
 
 // Metodos
 int get_dimension()const;
-int get_valor(int fila, int col)const;
+Celda get_celda(int fila, int col)const;
 // Metodos modificadores
-void set_celda(int fila, int columna, int valor);
+void set_celda(int fila, int columna, const Celda& celda);
 };
 
 #endif

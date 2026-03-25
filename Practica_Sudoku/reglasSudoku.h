@@ -1,43 +1,47 @@
 #ifndef REGLAS_H
 #define REGLAS_H
+
 #include "tablero.h"
 #include "celda.h"
 #include <fstream>
 
 using namespace std;
 
-const int MAX_TAM = 10000;
+// Estructura para los bloqueos
+typedef struct {
+    int fila;
+    int columna;
+} tPosicion;
 
-typedef struct{
-    int celdas;
-    int tam;
-    Celda bloqueadas[];
-}tContador;
+class ReglasSudoku {
+private:
+    Tablero tablero;
+    int celdas_ocupadas;
+    
+    // Gestionar bloqueos
+    int num_bloqueadas;
+    tPosicion bloqueadas[MAX_TAM * MAX_TAM]; 
 
-class Reglas{
-    private:
-        Tablero tablero;
-        tContador contador;
+public:
+    ReglasSudoku(); 
 
-    public:
-    // Constructores
-    Reglas();
+    // Consultoras 
+    int dame_dimension() const; 
+    Celda dame_celda(int fila, int columna) const;
+    bool terminado() const;
+    bool bloqueo() const;
+    int dame_num_celdas_bloqueadas() const;
+    void dame_celda_bloqueada(int posicion, int& fila, int& columna) const;
+    bool es_valor_posible(int fila, int columna, int valor) const;
 
-    // Metodos
-    int dameDimension();
-    int dameCelda(int fila, int columna);
-    bool terminado();
-    bool bloqueo();
-    int dame_num_celdas_bloqueadas();
-    Celda dame_celda_bloqueada(int posicion, int& fila, int& columna);
-    bool es_valor_posible(int fila, int columna, int valor);
-
-    // Metodos modificadores
+    // Modificadoras
     bool pon_valor(int fila, int columna, int valor);
-    bool quita_valor(int fila, int columna);
+    bool quita_valor(int fila, int columna); 
     void reset();
-    void autocompletar();
+    void autocompletar(); 
+    
+    //Inicializadora
     bool carga_sudoku(ifstream& archivo);
-
 };
+
 #endif

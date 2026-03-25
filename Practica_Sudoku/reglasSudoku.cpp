@@ -1,36 +1,63 @@
 #include "reglasSudoku.h"
 
 // Constructor
-Reglas::Reglas(){
-    contador.celdas = 0;
-    contador.tam = 0;
-    contador.bloqueadas[MAX_TAM];
+ReglasSudoku::ReglasSudoku(){
+    celdas_ocupadas = 0;
 }
 
 // Metodos
-
-int Reglas::dameDimension(){
+// Consultoras
+int ReglasSudoku::dame_dimension()const{
     return tablero.get_dimension();
 }
 
-int Reglas::dameCelda(int fila, int columna){
-    return tablero.get_valor(fila, columna);
+Celda ReglasSudoku::dame_celda(int fila, int columna)const{
+    return tablero.get_celda(fila, columna);
 }
 
-bool Reglas::terminado(){
+bool ReglasSudoku::terminado()const{
     int dimension = tablero.get_dimension();
 
-    return contador.celdas == dimension * dimension;
+    return celdas_ocupadas == dimension * dimension;
 }
 
-bool Reglas::bloqueo(){
-    return contador.tam != 0;
+bool ReglasSudoku::bloqueo()const{
+    return num_bloqueadas > 0;
 }
 
-int Reglas::dame_num_celdas_bloqueadas(){
-    return contador.tam;
+int ReglasSudoku::dame_num_celdas_bloqueadas()const{
+    return num_bloqueadas;
 }
 
-Celda Reglas::dame_celda_bloqueada(int posicion, int &fila, int &columna){
-    Celda celda = contador.bloqueadas[posicion - 1];  
+void ReglasSudoku::dame_celda_bloqueada(int posicion, int &fila, int &columna)const{
+    fila = bloqueadas[posicion].fila; 
+    columna = bloqueadas[posicion].columna;
+}
+
+bool ReglasSudoku::es_valor_posible(int fila, int columna, int valor) const{
+
+}
+
+// Modificadoras
+bool ReglasSudoku::pon_valor(int fila, int columna, int valor){
+
+}
+
+bool ReglasSudoku::quita_valor(int fila, int columna){
+    // Falta terminar con comprobaciones
+    Celda celda(0, VACIA);
+    tablero.set_celda(fila, columna, celda);
+}
+
+void ReglasSudoku::reset(){
+
+}
+
+void ReglasSudoku::autocompletar(){
+
+}
+    
+//Inicializadora
+bool ReglasSudoku::carga_sudoku(ifstream& archivo){
+
 }
