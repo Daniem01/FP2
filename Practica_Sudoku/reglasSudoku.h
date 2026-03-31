@@ -33,6 +33,7 @@ public:
     int dame_num_celdas_bloqueadas() const;
     void dame_celda_bloqueada(int posicion, int& fila, int& columna) const;
     bool es_valor_posible(int fila, int columna, int valor) const;
+    void actualizar_bloqueos();
 
     // Modificadoras
     bool pon_valor(int fila, int columna, int valor);
