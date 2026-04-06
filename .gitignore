@@ -1,0 +1,13 @@
+# --- Binarios y Compilados de C++ ---
+*.o
+*.out
+*.exe
+*.exe.a
+
+# --- VS Code y OS ---
+.vscode/
+.DS_Store
+
+# --- Archivos Temporales ---
+*~
+*.swp
