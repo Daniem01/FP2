@@ -18,15 +18,6 @@ A collection of C++ projects developed for the **Programming Fundamentals II** c
 * **Language:** C++ (Standard `std::c++11` or higher)
 * **Paradigm:** Procedural & Object-Oriented Programming (OOP)
 
-## 🚀 How to Run
-*(Note: Ensure you have `g++` or another C++ compiler installed)*
-
-1. Navigate to the desired project folder:
-   ```bash
-   cd Practica_Sudoku_2# 🧩 C++ Programming Fundamentals (FP2)
-
-A collection of C++ projects developed for the **Programming Fundamentals II** course. This repository showcases the progression from basic procedural programming with multidimensional arrays to Object-Oriented Programming (OOP) and algorithmic optimization.
-
 ## 📂 Project Structure
 
 | Project | Focus Area | Key Concepts |
