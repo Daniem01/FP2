@@ -18,12 +18,12 @@ A collection of C++ projects developed for the **Programming Fundamentals II** c
 * **Language:** C++ (Standard `std::c++11` or higher)
 * **Paradigm:** Procedural & Object-Oriented Programming (OOP)
 
-## 🚀 How to Run
+## 🚀 How to Run Practica_Sudoku or Practica_Sudoku_2
 *(Note: Ensure you have `g++` or another C++ compiler installed)*
 
 1. Navigate to the desired project folder:
    ```bash
-   cd Practica_Sudoku_2
+   cd Practica_Sudoku
 
 2. Compile the source files (compiles all .cpp files in the directory):
     ```bash
