@@ -37,7 +37,7 @@ void ReglasSudoku::dame_celda_bloqueada(int posicion, int &fila, int &columna)co
 }
 
 bool ReglasSudoku::es_valor_posible(int fila, int columna, int valor) const {
-    // El valor es posible si NO pertenece al multiconjunto de esa celda 
+    // El valor es posible si no pertenece al multiconjunto de esa celda 
     return !info_valores_no_validos.no_validos[fila][columna].pertenece(valor);
 }
 
@@ -73,7 +73,7 @@ void ReglasSudoku::actualizar_bloqueos() {
 bool ReglasSudoku::pon_valor(int fila, int columna, int valor) {
     bool exito = false;
 
-    // Comprobamos si la celda está vacía y si el valor es válido según el MultiConjunto 
+    // Comprobamos si la celda está vacía y si el valor es valido usando el multiconjunto
     if (tablero.get_celda(fila, columna).es_vacia() && es_valor_posible(fila, columna, valor)) {
         Celda nueva(valor, OCUPADA);
         tablero.set_celda(fila, columna, nueva);
@@ -82,7 +82,7 @@ bool ReglasSudoku::pon_valor(int fila, int columna, int valor) {
         actualizar_vecinos(fila, columna, valor, true);
 
         celdas_ocupadas++; 
-        actualizar_bloqueos(); // Método para refrescar la lista de bloqueadas 
+        actualizar_bloqueos(); // Refrescamos los bloqueos que pueda haber
         exito = true;
     }
     return exito;
@@ -95,7 +95,7 @@ bool ReglasSudoku::quita_valor(int fila, int columna) {
     if (tablero.get_celda(fila, columna).es_ocupada()) {
         int valor_a_quitar = tablero.get_celda(fila, columna).dame_valor();
 
-        //Ponemos la celda a VACIA  
+        // Ponemos la celda a VACIA  
         tablero.set_celda(fila, columna, Celda(0, VACIA));
 
         //Avisar a los vecinos que el valor se ha ido 
@@ -125,33 +125,24 @@ void ReglasSudoku::reset() {
 
 void ReglasSudoku::autocompletar() {
     int dim = dame_dimension();
-    bool hubo_cambios;
-
-    do {
-        hubo_cambios = false; // Resetear la bandera en cada vuelta
-        for (int f = 0; f < dim; f++) {
-            for (int c = 0; c < dim; c++) {
-                // Solo miramos celdas que están VACIA 
-                if (tablero.get_celda(f, c).es_vacia()) {
-                    int contador = 0;
-                    int valor_unico = 0;
-
-                    for (int v = 1; v <= dim; v++) {
-                        if (es_valor_posible(f, c, v)) {
-                            contador++;
-                            valor_unico = v;
-                        }
+    for (int f = 0; f < dim; f++) {
+        for (int c = 0; c < dim; c++) {
+            if (tablero.get_celda(f, c).es_vacia()) {
+                int contador = 0;
+                int valor_unico = 0;
+                for (int v = 1; v <= dim; v++) {
+                    if (es_valor_posible(f, c, v)) {
+                        contador++;
+                        valor_unico = v;
                     }
-
-                    // Si solo hay un valor posible, lo ponemos 
-                    if (contador == 1) {
-                        pon_valor(f, c, valor_unico);
-                        hubo_cambios = true; // Si pusimos un número, debemos volver a revisar todo
-                    }
+                }
+                // Si solo hay un valor posible lo ponemos
+                if (contador == 1) {
+                    pon_valor(f, c, valor_unico);
                 }
             }
         }
-    } while (hubo_cambios); // Repetir hasta que una vuelta completa no ponga ningún número 
+    }
 }
     
 //Inicializadora
@@ -180,27 +171,26 @@ bool ReglasSudoku::carga_sudoku(ifstream& archivo) {
     actualizar_bloqueos();
     return true;
 }
+
 void ReglasSudoku::actualizar_vecinos(int f, int c, int v, bool poner) {
     int dim = dame_dimension();
-    int n = sqrt(dim); 
+    int n = static_cast<int>(sqrt(dim)); 
 
     for (int i = 0; i < dim; i++) {
-        // Actualizar fila y columna
         if (poner) {
             info_valores_no_validos.no_validos[f][i].insertar(v);
             info_valores_no_validos.no_validos[i][c].insertar(v);
-        }
-        else {
+        } else {
             info_valores_no_validos.no_validos[f][i].eliminar(v);
             info_valores_no_validos.no_validos[i][c].eliminar(v);
         }
     }
 
-    // Actualizar subcuadrícula 
     int filaInicio = (f / n) * n;
     int colInicio = (c / n) * n;
     for (int i = filaInicio; i < filaInicio + n; i++) {
         for (int j = colInicio; j < colInicio + n; j++) {
+            // Solo actualizamos si no esta en la misma fila o columna sinono
             if (i != f && j != c) {
                 if (poner) info_valores_no_validos.no_validos[i][j].insertar(v);
                 else info_valores_no_validos.no_validos[i][j].eliminar(v);
