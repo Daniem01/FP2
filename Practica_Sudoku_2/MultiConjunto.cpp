@@ -3,10 +3,17 @@
 MultiConjunto::MultiConjunto() : num_elementos(0) {}
 
 int MultiConjunto::buscar_indice(int v) const {
-    for (int i = 0; i < num_elementos; i++) {
-        if (elementos[i].valor == v) return i;
+    int i = 0, resultado = -1;
+    bool encontrado = false;
+
+    while(i < num_elementos && !encontrado){
+        if (elementos[i].valor == v){
+            resultado = i;
+            encontrado = true;
+        }
+        i++;
     }
-    return -1;
+    return resultado;
 }
 
 int MultiConjunto::dame_num_elems() const {
