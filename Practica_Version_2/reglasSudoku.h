@@ -35,8 +35,10 @@ private:
 
     tValores_invalidos info_valores_no_validos;
 
-    // Metodo auxiliar
+    // Metodos auxiliares
     void actualizar_vecinos(int f, int c, int v, bool poner);
+    int contar_vacias() const;
+    int contar_k_opciones(int k) const;
 
 public:
     ReglasSudoku();
@@ -46,8 +48,10 @@ public:
     ~ReglasSudoku();
     // Constructor
     ReglasSudoku(const ReglasSudoku &sudoku);
-    // MOdificacion de = para asignaciones
+    // Sobrecarga de operadores
     ReglasSudoku& operator=(const ReglasSudoku &sudoku);
+    bool operator<(const ReglasSudoku& s2) const;
+    bool operator==(const ReglasSudoku& s2) const;
 
     // Consultoras
     int dame_dimension() const;

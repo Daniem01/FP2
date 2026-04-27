@@ -187,7 +187,8 @@ void ReglasSudoku::reset() {
         delete bloqueadas[i];
         bloqueadas[i] = nullptr;
     }
-
+    num_bloqueadas = 0;
+    
     // Todas las celdas ocupadas las ponemos vacias
     int dim = dame_dimension();
     for (int f = 0; f < dim; f++) {
@@ -276,4 +277,79 @@ void ReglasSudoku::actualizar_vecinos(int f, int c, int v, bool poner) {
             }
         }
     }
+}
+
+// Funcion auxiliar para contar celdas que estan vacias
+int ReglasSudoku::contar_vacias() const {
+    int dim = tablero.get_dimension();
+    return (dim * dim) - celdas_ocupadas;
+}
+
+// Funcion auxiliar para contar cuántas celdas tienen exactamente k candidatos
+int ReglasSudoku::contar_k_opciones(int k) const {
+    int contador = 0;
+    int dim = tablero.get_dimension();
+    for (int f = 0; f < dim; f++) {
+        for (int c = 0; c < dim; c++) {
+            if (tablero.get_celda(f, c).es_vacia()) {
+                int opciones = 0;
+                for (int v = 1; v <= dim; v++) {
+                    if (es_valor_posible(f, c, v)) opciones++;
+                }
+                if (opciones == k) contador++;
+            }
+        }
+    }
+    return contador;
+}
+
+bool ReglasSudoku::operator<(const ReglasSudoku& s2) const {
+    int v1 = this->contar_vacias();
+    int v2 = s2.contar_vacias(); 
+    bool sol = false;
+    bool decidido = false; 
+
+    if (v1 < v2) {
+        sol = true;
+        decidido = true;
+    } 
+    else if (v1 > v2) {
+        sol = false;
+        decidido = true;
+    }
+
+    // Desempate por si son iguales en celdas vacias
+    int k = 1;
+    while (k <= 9 && !decidido) {
+        int n1 = this->contar_k_opciones(k);
+        int n2 = s2.contar_k_opciones(k);
+    
+        if (n1 > n2) {
+            sol = true;
+            decidido = true;
+        } 
+        else if (n1 < n2) {
+            sol = false;
+            decidido = true;
+        }
+        k++;
+    }
+    
+    return sol;
+}
+
+bool ReglasSudoku::operator==(const ReglasSudoku& s2) const {
+    bool sol = true;
+    if (this->contar_vacias() != s2.contar_vacias()) {
+        sol = false;
+    }
+
+    int k = 1;
+    while (k <= 9 && sol) { 
+        if (this->contar_k_opciones(k) != s2.contar_k_opciones(k)) {
+            sol = false;
+        }
+        k++;
+    }
+    return sol;
 }
