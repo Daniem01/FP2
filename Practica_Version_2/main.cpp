@@ -4,6 +4,7 @@
 #include <cmath>
 #include "reglasSudoku.h"
 #include "colores.h"
+#include "checkML.h"
 
 using namespace std;
 
@@ -74,6 +75,9 @@ int main() {
     ReglasSudoku juego;
     string nombreArchivo;
     int opcion = 0;
+
+    // Esto tiene que estar descomentado pero es para VS en Windows
+    // _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
     // Cargamos el archivo
     cout << "Introduce el nombre del archivo de Sudoku: ";

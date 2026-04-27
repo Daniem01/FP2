@@ -5,25 +5,29 @@
 #include "MultiConjunto.h"
 #include "celda.h"
 #include <fstream>
+#include "checkML.h"
 
 using namespace std;
 
-// Estructura para los bloqueos
-typedef struct {
-    int fila;
-    int columna;
-} tPosicion;
-
-class ReglasSudoku {
+class ReglasSudoku
+{
 private:
+    // Estructura para los bloqueos
+    typedef struct
+    {
+        int fila;
+        int columna;
+    } tPosicion;
+
     Tablero tablero;
     int celdas_ocupadas;
-    
+
     // Gestionar bloqueos
     int num_bloqueadas;
-    tPosicion bloqueadas[MAX_TAM * MAX_TAM]; 
+    tPosicion* bloqueadas[MAX_TAM * MAX_TAM];
 
-    typedef struct {
+    typedef struct
+    {
         int nFilas;
         int nColumnas;
         MultiConjunto no_validos[MAX_TAM][MAX_TAM];
@@ -31,31 +35,38 @@ private:
 
     tValores_invalidos info_valores_no_validos;
 
-    //Metodo auxiliar
+    // Metodo auxiliar
     void actualizar_vecinos(int f, int c, int v, bool poner);
 
 public:
-    ReglasSudoku(); 
+    ReglasSudoku();
 
-    // Consultoras 
-    int dame_dimension() const; 
+    // Gestion de memoria dinamica
+    // Destructor
+    ~ReglasSudoku();
+    // Constructor
+    ReglasSudoku(const ReglasSudoku &sudoku);
+    // MOdificacion de = para asignaciones
+    ReglasSudoku& operator=(const ReglasSudoku &sudoku);
+
+    // Consultoras
+    int dame_dimension() const;
     Celda dame_celda(int fila, int columna) const;
     bool terminado() const;
     bool bloqueo() const;
     int dame_num_celdas_bloqueadas() const;
-    void dame_celda_bloqueada(int posicion, int& fila, int& columna) const;
+    void dame_celda_bloqueada(int posicion, int &fila, int &columna) const;
     bool es_valor_posible(int fila, int columna, int valor) const;
     void actualizar_bloqueos();
 
     // Modificadoras
     bool pon_valor(int fila, int columna, int valor);
-    bool quita_valor(int fila, int columna); 
+    bool quita_valor(int fila, int columna);
     void reset();
-    void autocompletar(); 
-    
-    //Inicializadora
-    bool carga_sudoku(ifstream& archivo);
+    void autocompletar();
 
+    // Inicializadora
+    bool carga_sudoku(ifstream &archivo);
 };
 
 #endif

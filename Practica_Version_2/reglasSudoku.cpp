@@ -5,6 +5,73 @@
 ReglasSudoku::ReglasSudoku(){
     celdas_ocupadas = 0;
     num_bloqueadas = 0;
+    // Inicializamos el array dinamico a nullptr
+    for (int i = 0; i < MAX_TAM * MAX_TAM; i++) {
+        bloqueadas[i] = nullptr;
+    }
+}
+
+// Metodos para la gestion de memoria dinamica
+ReglasSudoku::~ReglasSudoku(){
+    for(int i = 0; i < num_bloqueadas; i++){
+        // Borramos las direcciones que hay en bloqueadas y las ponemos a nullptr
+        delete bloqueadas[i];
+        bloqueadas[i] = nullptr;
+    }
+}
+
+ReglasSudoku::ReglasSudoku(const ReglasSudoku &sudoku){
+    // Copiamos los atributos
+    this->num_bloqueadas = sudoku.num_bloqueadas;
+    this->celdas_ocupadas = sudoku.celdas_ocupadas;
+    this->tablero = sudoku.tablero;
+    this->info_valores_no_validos = sudoku.info_valores_no_validos;
+
+    // Copiamos el array bloqueadas
+    for(int i = 0; i < num_bloqueadas; i++){
+        this->bloqueadas[i] = new tPosicion;
+        this->bloqueadas[i]->fila = sudoku.bloqueadas[i]->fila;
+        this->bloqueadas[i]->columna = sudoku.bloqueadas[i]->columna;
+    }
+
+    // Para que el resto del array no este sucio lo ponemos a nullptr desde num_bloqueadas en adelante
+    for (int i = num_bloqueadas; i < MAX_TAM * MAX_TAM; ++i) {
+        this->bloqueadas[i] = nullptr;
+    }
+}
+
+ReglasSudoku& ReglasSudoku::operator=(const ReglasSudoku &sudoku) {
+    // Si no son iguales, procedemos a hacer la asignacion
+    if (this != &sudoku) {
+        
+        //  Primero antes de copiar nada debemos liberar la memoria que tuviera ocupada
+        for (int i = 0; i < num_bloqueadas; ++i) {
+            if (bloqueadas[i] != nullptr) {
+                delete bloqueadas[i];
+                bloqueadas[i] = nullptr;
+            }
+        }
+
+        // Copiamos los atributos estaticos
+        this->num_bloqueadas = sudoku.num_bloqueadas;
+        this->celdas_ocupadas = sudoku.celdas_ocupadas;
+        this->tablero = sudoku.tablero;
+        this->info_valores_no_validos = sudoku.info_valores_no_validos;
+
+        // Copiamos bloqueadas reservando la memoria
+        for (int i = 0; i < num_bloqueadas; ++i) {
+            this->bloqueadas[i] = new tPosicion;
+            this->bloqueadas[i]->fila = sudoku.bloqueadas[i]->fila;
+            this->bloqueadas[i]->columna = sudoku.bloqueadas[i]->columna;
+        }
+
+        // El resto del array lo ponemos a nullptr
+        for (int i = num_bloqueadas; i < MAX_TAM * MAX_TAM; ++i) {
+            this->bloqueadas[i] = nullptr;
+        }
+    }
+
+    return *this;
 }
 
 // Metodos
@@ -32,8 +99,8 @@ int ReglasSudoku::dame_num_celdas_bloqueadas()const{
 }
 
 void ReglasSudoku::dame_celda_bloqueada(int posicion, int &fila, int &columna)const{
-    fila = bloqueadas[posicion].fila; 
-    columna = bloqueadas[posicion].columna;
+    fila = bloqueadas[posicion]->fila; 
+    columna = bloqueadas[posicion]->columna;
 }
 
 bool ReglasSudoku::es_valor_posible(int fila, int columna, int valor) const {
@@ -42,9 +109,14 @@ bool ReglasSudoku::es_valor_posible(int fila, int columna, int valor) const {
 }
 
 void ReglasSudoku::actualizar_bloqueos() {
+    // Limpieamos primero los bloqueos antiguos
+    for (int i = 0; i < num_bloqueadas; i++) {
+        delete bloqueadas[i];
+        bloqueadas[i] = nullptr;
+    }
+
     num_bloqueadas = 0; 
     int dim = dame_dimension();
-
     // Recorremos buscando celdas vacias y miramos si tiene algun valor posible
     for (int f = 0; f < dim; f++) {
         for (int c = 0; c < dim; c++) {
@@ -60,8 +132,9 @@ void ReglasSudoku::actualizar_bloqueos() {
 
                 // Si no hay opciones estamos bloqueados
                 if (!hay_alguna_opcion) {
-                    bloqueadas[num_bloqueadas].fila = f;
-                    bloqueadas[num_bloqueadas].columna = c;
+                    bloqueadas[num_bloqueadas] = new tPosicion;
+                    bloqueadas[num_bloqueadas]->fila = f;
+                    bloqueadas[num_bloqueadas]->columna = c;
                     num_bloqueadas++; 
                 }
             }
@@ -109,6 +182,12 @@ bool ReglasSudoku::quita_valor(int fila, int columna) {
 }
 
 void ReglasSudoku::reset() {
+    // Primero limpiamos
+    for (int i = 0; i < num_bloqueadas; i++) {
+        delete bloqueadas[i];
+        bloqueadas[i] = nullptr;
+    }
+
     // Todas las celdas ocupadas las ponemos vacias
     int dim = dame_dimension();
     for (int f = 0; f < dim; f++) {
