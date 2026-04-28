@@ -11,6 +11,8 @@ using namespace std;
 
 class ReglasSudoku
 {
+    friend bool operator<(const ReglasSudoku& s1, const ReglasSudoku& s2);
+    friend bool operator==(const ReglasSudoku& s1, const ReglasSudoku& s2);
 private:
     // Estructura para los bloqueos
     typedef struct
@@ -50,8 +52,6 @@ public:
     ReglasSudoku(const ReglasSudoku &sudoku);
     // Sobrecarga de operadores
     ReglasSudoku& operator=(const ReglasSudoku &sudoku);
-    bool operator<(const ReglasSudoku& s2) const;
-    bool operator==(const ReglasSudoku& s2) const;
 
     // Consultoras
     int dame_dimension() const;
@@ -72,5 +72,7 @@ public:
     // Inicializadora
     bool carga_sudoku(ifstream &archivo);
 };
+
+
 
 #endif

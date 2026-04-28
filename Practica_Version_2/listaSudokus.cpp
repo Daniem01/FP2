@@ -37,7 +37,7 @@ void ListaSudokus::resize(){
 }
 
 void ListaSudokus::insertar(const ReglasSudoku& sudoku){
-
+    
 }
 
 void ListaSudokus::eliminar(int indice) {
@@ -54,10 +54,10 @@ void ListaSudokus::eliminar(int indice) {
     }
 }
 
-int ListaSudokus::get_contador() const{
+int ListaSudokus::dame_num_elems() const{
     return contador;
 }
 
-ReglasSudoku* ListaSudokus::obtener_sudoku(int indice) const{
-    return lista[indice];
+ReglasSudoku& ListaSudokus::dame_sudoku(int indice) const{
+    return *lista[indice];
 }

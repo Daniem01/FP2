@@ -28,8 +28,8 @@ public:
     void eliminar(int indice);
     
     // Consultoras
-    int get_contador() const;
-    ReglasSudoku* obtener_sudoku(int indice) const;
+    int dame_num_elems() const;
+    ReglasSudoku& dame_sudoku(int indice) const;
 };
 
 #endif

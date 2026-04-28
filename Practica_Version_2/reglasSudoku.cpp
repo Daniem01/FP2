@@ -303,8 +303,8 @@ int ReglasSudoku::contar_k_opciones(int k) const {
     return contador;
 }
 
-bool ReglasSudoku::operator<(const ReglasSudoku& s2) const {
-    int v1 = this->contar_vacias();
+bool operator<(const ReglasSudoku& s1, const ReglasSudoku& s2) {
+    int v1 = s1.contar_vacias();
     int v2 = s2.contar_vacias(); 
     bool sol = false;
     bool decidido = false; 
@@ -321,7 +321,7 @@ bool ReglasSudoku::operator<(const ReglasSudoku& s2) const {
     // Desempate por si son iguales en celdas vacias
     int k = 1;
     while (k <= 9 && !decidido) {
-        int n1 = this->contar_k_opciones(k);
+        int n1 = s1.contar_k_opciones(k);
         int n2 = s2.contar_k_opciones(k);
     
         if (n1 > n2) {
@@ -338,15 +338,15 @@ bool ReglasSudoku::operator<(const ReglasSudoku& s2) const {
     return sol;
 }
 
-bool ReglasSudoku::operator==(const ReglasSudoku& s2) const {
+bool operator==(const ReglasSudoku&s1, const ReglasSudoku& s2) {
     bool sol = true;
-    if (this->contar_vacias() != s2.contar_vacias()) {
+    if (s1.contar_vacias() != s2.contar_vacias()) {
         sol = false;
     }
 
     int k = 1;
     while (k <= 9 && sol) { 
-        if (this->contar_k_opciones(k) != s2.contar_k_opciones(k)) {
+        if (s1.contar_k_opciones(k) != s2.contar_k_opciones(k)) {
             sol = false;
         }
         k++;
