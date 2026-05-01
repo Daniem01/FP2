@@ -182,22 +182,11 @@ bool ReglasSudoku::quita_valor(int fila, int columna) {
 }
 
 void ReglasSudoku::reset() {
-    // Primero limpiamos
-    for (int i = 0; i < num_bloqueadas; i++) {
-        delete bloqueadas[i];
-        bloqueadas[i] = nullptr;
-    }
-    num_bloqueadas = 0;
-    
-    // Todas las celdas ocupadas las ponemos vacias
     int dim = dame_dimension();
     for (int f = 0; f < dim; f++) {
         for (int c = 0; c < dim; c++) {
             if (tablero.get_celda(f, c).es_ocupada()) {
-                int v = tablero.get_celda(f, c).dame_valor();
-                actualizar_vecinos(f, c, v, false);
-                tablero.set_celda(f, c, Celda(0, VACIA));
-                celdas_ocupadas--;
+                quita_valor(f, c);
             }
         }
     }

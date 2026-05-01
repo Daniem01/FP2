@@ -1,14 +1,14 @@
 #ifndef MULTICONJUNTO_H
 #define MULTICONJUNTO_H
 
-// Estructura para almacenar el valor y la multiplicidad
-typedef struct {
-    int valor;
-    int multiplicidad;
-} tElementoMC;
-
 class MultiConjunto {
 private:
+    // Estructura para almacenar el valor y la multiplicidad
+    typedef struct {
+        int valor;
+        int multiplicidad;
+    } tElementoMC;
+
     static const int MAX_VALORES = 9; 
     tElementoMC elementos[MAX_VALORES];
     int num_elementos;

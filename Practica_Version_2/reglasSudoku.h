@@ -39,8 +39,6 @@ private:
 
     // Metodos auxiliares
     void actualizar_vecinos(int f, int c, int v, bool poner);
-    int contar_vacias() const;
-    int contar_k_opciones(int k) const;
 
 public:
     ReglasSudoku();
@@ -71,6 +69,10 @@ public:
 
     // Inicializadora
     bool carga_sudoku(ifstream &archivo);
+
+    // Metodos auxiliares
+    int contar_vacias() const;
+    int contar_k_opciones(int k) const;
 };
 
 

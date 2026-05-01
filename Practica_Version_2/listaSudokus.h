@@ -19,6 +19,11 @@ public:
     ListaSudokus();
     ~ListaSudokus();
 
+    //Operador []
+    ReglasSudoku& operator[](int indice) {
+        return *lista[indice];
+    }
+
     // Ponemos que no usamos ni constructor por copia ni asignacion
     ListaSudokus(const ListaSudokus& otra) = delete;
     ListaSudokus& operator=(const ListaSudokus& otra) = delete;
@@ -30,6 +35,7 @@ public:
     // Consultoras
     int dame_num_elems() const;
     ReglasSudoku& dame_sudoku(int indice) const;
+    void mostrar_lista() const;
 };
 
 #endif

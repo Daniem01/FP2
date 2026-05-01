@@ -1,4 +1,6 @@
 #include "listaSudokus.h"
+#include<iostream>
+using namespace std;
 
 ListaSudokus::ListaSudokus(){
     capacidad = 5; 
@@ -36,8 +38,23 @@ void ListaSudokus::resize(){
     lista = lista_aux;
 }
 
-void ListaSudokus::insertar(const ReglasSudoku& sudoku){
-    
+void ListaSudokus::insertar(const ReglasSudoku& sudoku) {
+    if (contador == capacidad) {
+        resize();
+    }
+
+    int pos = 0;
+    while (pos < contador && *lista[pos] < sudoku) {
+        pos++;
+    }
+
+    for (int i = contador; i > pos; i--) {
+        lista[i] = lista[i - 1];
+    }
+
+    lista[pos] = new ReglasSudoku(sudoku);
+
+    contador++;
 }
 
 void ListaSudokus::eliminar(int indice) {
@@ -50,7 +67,7 @@ void ListaSudokus::eliminar(int indice) {
         }
         
         lista[contador - 1] = nullptr; // Lo ponemos a nullptr el ultimo
-        contador--; // Redimensionamos el contador
+        contador--; // Restamos al contador
     }
 }
 
@@ -60,4 +77,15 @@ int ListaSudokus::dame_num_elems() const{
 
 ReglasSudoku& ListaSudokus::dame_sudoku(int indice) const{
     return *lista[indice];
+}
+
+void ListaSudokus::mostrar_lista() const {
+    for (int i = 0; i < contador; i++) {
+        cout << i + 1 << ": Sudoku con " << lista[i]->contar_vacias() << " casillas vacias" << endl;
+
+        for (int k = 1; k <= 9; k++) {
+            cout << "  celdas con " << k << " valores posibles: "
+                << lista[i]->contar_k_opciones(k) << endl;
+        }
+    }
 }
